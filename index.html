@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <title>Ubuntu 24.04</title>
+
+        <link rel="stylesheet" href="css/main.css">
+
+    </head>
+
+    <body>
+
+        <!--Debug-->
+
+        <!--Selection (visual)-->
+
+        <div id="selection" class="selection" style="display: none"></div>
+
+        <!--Top Bar-->
+
+        <div class="topbar">
+
+            <!--<div class="desktops item" number="2" focus="1">
+
+            </div>-->
+
+            <div class="top-left">
+			
+				<div id="sizeDebug" style="color: white;"></div>
+
+            </div>
+
+            <div class="top-mid">
+                <div id="time" class="time item">
+                    Sep 4 12:03
+                </div>
+            </div>
+
+            <div class="top-right">
+                <div class="accessibility item">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="17px" fill="#e3e3e3"><path d="M479.75-696q-34.75 0-59.25-24.75t-24.5-59.5q0-34.75 24.75-59.25t59.5-24.5q34.75 0 59.25 24.75t24.5 59.5q0 34.75-24.75 59.25t-59.5 24.5ZM360-108v-456H144v-72h672v72H600v456h-72l-9-220h-77l-10 220h-72Z"/></svg>
+                </div>
+
+                <div class="settings item">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="17px" fill="#666666"><path d="m699-363-51-51 206-205q-81-61-176-93t-198-32q-36.67 0-73.33 4.5Q370-735 335-727l-59-59q48-15 99.24-22.5Q426.48-816 480-816q140 0 263 51t217 141L699-363ZM480-246l66-66-359-359q-21 11-41 24.5T106-619l374 373ZM813-45 597-261 480-144 0-624q30-29 63.53-54.22Q97.07-703.45 134-724l-89-89 51-51L864-96l-51 51ZM492-571Zm-125 79Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="17px" fill="#666666"><path d="M768-90 661-197q-22 14-52.5 26.5T552-152v-74q12-5 28.5-11.5T608-250L480-378v187L288-383H144v-192h138L90-768l51-51 678 678-51 51Zm-6-209-52-52q16-29 25-61.5t9-66.5q0-89-53.5-158.5T552-733v-74q117 23 190.5 116T816-479q0 48-14 93.5T762-299ZM638-423l-86-86v-122q45 20 70.5 61.5T648-479q0 14-2 28t-8 28ZM480-581l-93-93 93-93v186Zm-72 216v-85l-72-72-18 19H216v48h102l90 90Zm-36-121Z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="17px" viewBox="0 -960 960 960" width="17px" fill="#e3e3e3"><path d="M480-96q-79 0-149-30t-122.5-82.5Q156-261 126-331T96-480q0-80 30.5-150T209-752l51 51q-42 42-67 99t-25 122q0 130 91 221t221 91q130 0 221-91t91-221q0-65-24-122t-67-99l51-51q53 52 82.5 122T864-480q0 79-30 149t-82.5 122.5Q699-156 629.5-126T480-96Zm-36-336v-432h72v432h-72Z"/></svg>
+                </div>
+            </div>
+ 
+        </div>
+        
+        <!--Notifications-->
+        
+        <div id="notification-window" class="notification-window"></div>
+
+        <!--Custom Menu-->
+
+        <div id="custom-menu" class="custom-menu">
+            <ul>
+                <li><a>Custom Option 1</a></li>
+                <li><a>Custom Option 2</a></li>
+                <li><a>Custom Option 3</a></li>
+            </ul>
+        </div>
+
+        <!--Scripts-->
+
+        <script>
+            function updateDateTime() {
+                const currentDate = new Date();
+
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const month = monthNames[currentDate.getMonth()];
+                const day = currentDate.getDate();
+                const hours = String(currentDate.getHours()).padStart(2, '0');
+                const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+
+                const formattedDate = `${month} ${day}⠀${hours}:${minutes}`
+
+                document.getElementById('time').textContent = formattedDate;
+            }
+
+            updateDateTime();
+
+            setInterval(updateDateTime, 1000);
+        </script>
+
+        <script> // DevTools and other
+
+            function removeScripts() {
+                const scripts = document.getElementsByTagName('script');
+
+                for (let script of scripts) {
+                    script.outerHTML = '<!--No code here-->';
+                }
+            }
+            
+            function checkUnload(e) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+
+            window.addEventListener('keydown', function (e) {
+
+                if (e.metaKey || e.ctrlKey) {
+                    e.preventDefault();
+                }
+
+                if (e.key === 'Alt' || e.altKey) {
+                    e.preventDefault();
+                }
+
+                if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 's')) {
+                    e.preventDefault();
+                }
+
+                if (e.key.startsWith('F') && e.key !== 'F11') {
+                    e.preventDefault();
+                }
+
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C')) {
+                    e.preventDefault();
+                }
+
+            });
+
+            function checkDevToolsInWindow() {
+                if ((!document.fullscreenElement && window.outerHeight - window.innerHeight > 130) || window.outerWidth - window.innerWidth > 130) {
+
+                    window.removeEventListener('beforeunload', checkUnload);
+
+                    removeScripts();
+
+                } else {
+
+                    window.addEventListener('beforeunload', checkUnload);
+
+                }
+            }
+
+            /*window.onblur = function() {  
+                window.removeEventListener('beforeunload', checkUnload);
+                window.location.href = 'windows/fallback-2.html'; 
+            }*/
+
+            setInterval(checkDevToolsInWindow, 200);
+
+            window.addEventListener('resize', checkDevToolsInWindow);
+        </script>
+
+        <script type="text/javascript" src="js/main.js"></script>
+
+    </body>
+
+</html>
+
+<!--TODO: use JS to redirect to the correct page: sa.my-->
