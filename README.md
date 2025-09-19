@@ -11,4 +11,4 @@ Inspired by [malisipi](https://github.com/malisipi/ubuntu-tour)'s project, but i
 
 ## Info
 Created for Firefox (possible compatibility issues with others browsers)\
-Blocks the most of broswers shortcuts for a more immersive experience\
+Blocks the most of broswers shortcuts for a more immersive experience
