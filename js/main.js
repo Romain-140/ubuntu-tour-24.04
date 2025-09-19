@@ -5,7 +5,7 @@ const customMenu = document.getElementById('custom-menu');
 document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
 
-    if (e.clientY < 31) {return}
+    if (e.target !== document.getElementById('background') && e.target !== document.getElementById('selection')) return;
 
     const posX = e.clientX;
     const posY = e.clientY;
@@ -16,7 +16,7 @@ document.addEventListener('contextmenu', function (e) {
     customMenu.style.display = 'block';
 });
 
-document.addEventListener('click', function (e) {
+document.addEventListener('mousedown', function (e) {
     if (e.button !== 2) {
         customMenu.style.display = 'none';
     }
@@ -24,49 +24,64 @@ document.addEventListener('click', function (e) {
 
 // TopBar Items
 
-// // Time & Notifications
+const elementDiv = [document.getElementById('notification-window'), document.getElementById('accessibility-window'), document.getElementById('settings-window')];
+const triggerDiv = [document.getElementById('time'), document.getElementById('accessibility'), document.getElementById('settings')];
+var _isDivWindowOpen = [false, false, false];
 
-const elementDiv = document.getElementById('notification-window');
-const timeDiv = document.getElementById('time');
-var _isNotificationsOpen = false;
+function openWindow(n, e) {
+    if (_isDivWindowOpen[n]) return;
 
-function openNotifications(e) {
-    if (_isNotificationsOpen) {return}
-    
-    elementDiv.style.height = `${window.innerHeight/2}px`;
-
-    document.addEventListener('click', closeNotifications);
-    timeDiv.removeEventListener('click', openNotifications);
-    
     e.stopPropagation();
+
+    const closeWindowHandler = closeWindow.bind(null, n);
+
+    elementDiv[n].style.display = 'block';
+
+    document.addEventListener('mousedown', closeWindowHandler);
+
+    triggerDiv[n].removeEventListener('click', triggerDiv[n].openWindowHandler);
+
+    triggerDiv[n].style.backgroundColor = 'rgba(150, 150, 150, 0.5)';
+
+    _isDivWindowOpen[n] = true;
+
+    elementDiv[n].classList.remove('disappear');
+    elementDiv[n].classList.add('appear');
     
-    timeDiv.style.backgroundColor = 'rgba(150, 150, 150, 0.5)';
-    
-    _isNotificationsOpen = true;
-    
-    elementDiv.classList.remove('disappear');
-    elementDiv.classList.add('appear');
+    triggerDiv[n].closeWindowHandler = closeWindowHandler;
 }
 
-function closeNotifications(e) {
-    if (!_isNotificationsOpen) {return}
+function closeWindow(n, e) {
+    if (!_isDivWindowOpen[n]) return;
 
-    //if (e.target in elementDiv.children) {return} // to fix // TODO
-    
-    document.removeEventListener('click', closeNotifications);
-    timeDiv.addEventListener('click', openNotifications);
-    
+    if (elementDiv[n].contains(e.target)) return;
+
+    document.removeEventListener('mousedown', triggerDiv[n].closeWindowHandler);
+
     e.stopPropagation();
-    
-    timeDiv.style.backgroundColor = '';
-    
-    _isNotificationsOpen = false;
-    
-    elementDiv.classList.remove('appear');
-    elementDiv.classList.add('disappear');
+
+    const openWindowHandler = openWindow.bind(null, n);
+
+    triggerDiv[n].addEventListener('click', openWindowHandler);
+
+    triggerDiv[n].style.backgroundColor = '';
+
+    _isDivWindowOpen[n] = false;
+
+    elementDiv[n].classList.remove('appear');
+    elementDiv[n].classList.add('disappear');
+
+    triggerDiv[n].openWindowHandler = openWindowHandler
+
+    setTimeout((() => {elementDiv[n].style.display = 'none'}), 150);
 }
 
-timeDiv.addEventListener('click', openNotifications);
+triggerDiv[0].addEventListener('click', openWindow.bind(null, 0));
+triggerDiv[1].addEventListener('click', openWindow.bind(null, 1));
+triggerDiv[2].addEventListener('click', openWindow.bind(null, 2));
+
+
+// TODO: fix immediat reopen
 
 // Desktop Selection
 
@@ -76,7 +91,7 @@ let startX, startY;
 
 document.addEventListener('mousedown', function(e) {
 
-    if (e.clientY <= 31) {return} // Prevent on Top
+    if (e.target !== document.getElementById('background')) return;
 
 
     startX = e.clientX;
@@ -123,3 +138,5 @@ function onMouseMove(e) {
 }
 
 // On start
+
+// // // TODO: edit context menu spawn to prevent overflow
