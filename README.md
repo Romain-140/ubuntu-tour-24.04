@@ -8,3 +8,7 @@ Inspired by [malisipi](https://github.com/malisipi/ubuntu-tour)'s project, but i
 * Imitation of GNOME
 * Badic Terminal (hardcoded commands)
 * Settings
+
+## Info
+Created for Firefox (possible compatibility issues with others browsers)\
+Blocks the most of broswers shortcuts for a more immersive experience\
